@@ -41,13 +41,13 @@ api_reporter_bot/
 
 Create a file named `.env` inside your `api_reporter_bot/` folder:
 
-```env
+env
 API_ID=your_telegram_api_id
 API_HASH=your_telegram_api_hash
 SESSION_NAME=dishant_api_reporter
 DEST_CHAT=-100xxxxxxxxxx
 🔑 Get your API credentials from my.telegram.org
-DEST_CHAT = Telegram group ID where the bot posts.```
+DEST_CHAT = Telegram group ID where the bot posts.
 
 
 ⚙️ Setup & Run

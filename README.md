@@ -21,19 +21,19 @@ I focus on practical problem-solving — not theory.
 |----------|--------------|-----------|
 | [**Telegram Forwarder Bot**](./telegram_forwarder) | Forwards messages from one Telegram group to another automatically. Perfect for signal channels or monitoring groups. | Python, Telethon, dotenv |
 | [**AI Reporter Bot**](./api_reporter_bot) | Fetches live data from multiple APIs (CoinGecko, FakeStore), formats reports, and sends AI-style insights to Telegram. | Python, Telethon, Requests, dotenv |
+| [**Business Workflow Orchestrator**](./business_orchestrator) | Automates daily business summaries by merging Sales, Leads, and Attendance data into unified KPI reports and AI-style insights sent to Telegram. | Python, Pandas, Telethon, dotenv |
 
 > 🔜 Upcoming Projects:
 > - **AI Knowledge Assistant** — team Q&A bot using document search  
 > - **Market Intelligence Bot** — real-time crypto and trading alerts  
-> - **Workflow Orchestrator** — automated cross-platform business actions  
 
 ---
 
 ## 🧰 Core Stack
 
 - **Python 3.x**
-- **Telethon / Requests / dotenv**
-- **APIs** (CoinGecko, FakeStore, JSONPlaceholder, etc.)
+- **Telethon / Requests / dotenv / Pandas**
+- **APIs** (CoinGecko, FakeStore, JSONPlaceholder, Google Sheets, etc.)
 - **AI & Low-Code Logic**
 
 ---
@@ -49,7 +49,7 @@ turning manual, time-consuming work into smart, efficient systems powered by AI 
 
 **Dishant Makawana**  
 📍 Ahmedabad, India  
-💬 [LinkedIn](www.linkedin.com/in/dishant-makawana-4b849b137) 
+💬 [LinkedIn](www.linkedin.com/in/dishant-makawana-4b849b137)
 
 ---
 

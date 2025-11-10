@@ -49,7 +49,7 @@ turning manual, time-consuming work into smart, efficient systems powered by AI 
 
 **Dishant Makawana**  
 📍 Ahmedabad, India  
-💬 [LinkedIn](https://linkedin.com) *(add your real link later)*  
+💬 [LinkedIn](www.linkedin.com/in/dishant-makawana-4b849b137) *(add your real link later)*  
 
 ---
 

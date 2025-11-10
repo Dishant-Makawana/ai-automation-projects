@@ -113,20 +113,23 @@ It’s not just automation — it’s a foundation for a **corporate-grade data 
 ## ⚙️ Setup
 
 ### 1️⃣ Install
-```bash
+```
 pip install python-dotenv telethon pandas
+```
 2️⃣ Configure .env
-env
-Copy code
+```
 API_ID=your_telegram_api_id
 API_HASH=your_telegram_api_hash
 SESSION_NAME=dishant_business_orch
 DEST_CHAT=-100xxxxxxxxxxx
-UPDATE_INTERVAL=1800  # seconds
+UPDATE_INTERVAL=1800  # seconds 
+```
+
 3️⃣ Run
-bash
-Copy code
+```
 python run_orchestrator.py
+```
+
 The orchestrator will:
 
 Auto-generate demo data (if none exists)
@@ -135,9 +138,10 @@ Append KPI logs in business_summary_log.csv
 
 Post updates to Telegram automatically
 
+
 📊 Example Output
-yaml
-Copy code
+
+```
 📅 Daily Business Summary — 10 Nov 2025 • 18:00
 
 💰 Sales: ₹2,35,000 (+12% vs yesterday)
@@ -149,6 +153,8 @@ Copy code
 • Sales momentum strong and consistent.
 • Lead flow improving with digital source mix stable.
 • Team presence remains high, maintaining operational stability.
+```
+
 🧱 Roadmap
  Connect Google Sheets API for real sales/lead data
 
@@ -172,9 +178,10 @@ Biometric Attendance	Vendor REST endpoints
 Slack / Discord	Webhooks
 Email Digest	smtplib, email
 
+
 🧱 Core Design Pattern
-scss
-Copy code
+
+```
 [ Data Sources ]
       ↓
 [ Ingest Modules ]  --> (Sales, Leads, Attendance)
@@ -186,6 +193,9 @@ Copy code
 [ Output Channels (Telegram / Slack / Email) ]
       ↓
 [ CSV/DB Storage ]
+
+```
+
 👨‍💻 Author
 Dishant Makawana
 AI Automation & Workflow Developer
@@ -196,4 +206,5 @@ AI Automation & Workflow Developer
 📜 License
 Open for learning and demonstration purposes.
 Use, modify, or expand freely with proper credit.
+
 

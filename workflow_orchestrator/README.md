@@ -30,10 +30,10 @@ Collecting data from all of them manually wastes time and leads to miscommunicat
 - 💬 **Telegram notifications** — sends daily/periodic summaries.  
 - ⏰ **Configurable scheduler** — adjust intervals in `.env`.  
 - 🧩 **Modular design** — add new data modules easily.
-
----
-
+  
+```
 ## 🧱 Current Architecture
+
 └── business_orchestrator/
 ├── run_orchestrator.py # main orchestrator
 ├── .env # environment variables (private)
@@ -42,10 +42,6 @@ Collecting data from all of them manually wastes time and leads to miscommunicat
 ├── business_orchestrator.log
 └── README.md
 
-yaml
-Copy code
-
----
 
 ## 🧰 Tech Stack
 | Component | Technology |
@@ -57,8 +53,7 @@ Copy code
 | Scheduling | time / async loops |
 | Logging | Python logging module |
 | Optional Add-ons | Google Sheets API, REST APIs, Email/Slack integration |
-
----
+```
 
 ## 🧩 How It Works
 
@@ -206,5 +201,6 @@ AI Automation & Workflow Developer
 📜 License
 Open for learning and demonstration purposes.
 Use, modify, or expand freely with proper credit.
+
 
 

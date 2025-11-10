@@ -115,7 +115,7 @@ pip install python-dotenv telethon pandas
 ```
 API_ID=your_telegram_api_id
 API_HASH=your_telegram_api_hash
-SESSION_NAME=dishant_business_orch
+SESSION_NAME=dishant_workflow_orch
 DEST_CHAT=-100xxxxxxxxxxx
 UPDATE_INTERVAL=1800  # seconds 
 ```
@@ -201,6 +201,7 @@ AI Automation & Workflow Developer
 📜 License
 Open for learning and demonstration purposes.
 Use, modify, or expand freely with proper credit.
+
 
 
 

@@ -191,16 +191,17 @@ Email Digest	smtplib, email
 
 ```
 
-👨‍💻 Author 
-Dishant Makawana 
-AI Automation & Workflow Developer 
+👨‍💻 Author  
+Dishant Makawana  
+AI Automation & Workflow Developer  
 📍 Ahmedabad, Gujarat, India
 
 💡 Building real-world automations that merge data, AI, and human context into practical business systems.
 
-📜 License
-Open for learning and demonstration purposes. 
+📜 License  
+Open for learning and demonstration purposes.  
 Use, modify, or expand freely with proper credit.
+
 
 
 

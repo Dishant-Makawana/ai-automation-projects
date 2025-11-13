@@ -1,0 +1,28 @@
+TCS Client FAQs and Communication Guidelines
+
+Q: How are client escalations handled?
+A: Delivery Manager responds within 4 working hours and ensures a resolution within 24 hours.
+
+Q: Who approves change requests?
+A: Project Manager and Client SPOC review the change request together before implementation.
+
+Q: What are the billing cycles?
+A: Monthly invoices are generated on the 25th of each month and shared by Finance.
+
+Q: When are weekly reports due?
+A: Every Friday by 5 PM IST, shared via the official client communication channel.
+
+Q: How are urgent bugs tracked after release?
+A: Through Jira or ServiceNow; clients are notified immediately when the ticket is logged.
+
+Q: What tools are used for client communication?
+A: Microsoft Teams and Outlook are preferred. Slack or Zoom can be used if agreed upon in the contract.
+
+Q: What’s the protocol for client data sharing?
+A: Always share through secure SFTP or encrypted email attachments.
+
+Q: How often are client satisfaction surveys conducted?
+A: Quarterly, as part of the project review and retention process.
+
+Q: Who handles client onboarding?
+A: The Business Analyst and Project Manager jointly conduct onboarding and tool access setup.

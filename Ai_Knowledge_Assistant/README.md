@@ -2,29 +2,29 @@
 
 A local, private, company-grade Knowledge Assistant that answers HR, IT, Admin, Finance, and Security questions directly inside Slack.
 
-This project uses:
-FAISS vector database
-SentenceTransformer embeddings (MiniLM)
-Slack Bolt + Flask
-Custom retrieval filtering
-No external LLMs (zero cost, fully private)
-Ideal for enterprises needing fast internal Q&A without sending data to OpenAI.
+This project uses:  
+FAISS vector database  
+SentenceTransformer embeddings (MiniLM)  
+Slack Bolt + Flask  
+Custom retrieval filtering  
+No external LLMs (zero cost, fully private)  
+Ideal for enterprises needing fast internal Q&A without sending data to OpenAI.  
 
 ⭐ Features
-🔹 1. Local RAG (Retrieval-Augmented Generation)
+🔹 1. Local RAG (Retrieval-Augmented Generation)  
 Loads internal documents (PDF/CSV/TXT), encodes them, stores them in FAISS, and retrieves answers instantly.
 
-🔹 2. Slack Integration
+🔹 2. Slack Integration  
 Ask questions by mentioning the bot:
 ```
 @Knowledge Assistant What is our leave policy?
 ```
 Bot responds with precise, filtered answer snippets.
 
-🔹 3. Keyword-Level Filtering
+🔹 3. Keyword-Level Filtering  
 Improves accuracy by returning only lines relevant to user query (instead of entire paragraphs).
 
-🔹 4. Contact Lookup
+🔹 4. Contact Lookup  
 Every answer automatically includes the correct contact person:
 ```
 For further assistance:
@@ -40,7 +40,7 @@ No OpenAI
 No cloud calls  
 Your documents stay local.  
 
-🔹 6. Sandbox-First Architecture
+🔹 6. Sandbox-First Architecture  
 Before deploying to Slack, you test everything locally (FastAPI Dashboard + Evaluator + Logs).
 
 📁 Project Structure
@@ -67,7 +67,7 @@ ai_knowledge_assistant/
 ```
 
 
-⚙️ Setup Instructions
+⚙️ Setup Instructions  
 1️⃣ Install dependencies
 ```
 pip install -r requirements.txt
@@ -79,7 +79,7 @@ pip install slack-bolt flask python-dotenv \
             langchain-community langchain-text-splitters pandas
 ```
 
-2️⃣ Add your Slack credentials
+2️⃣ Add your Slack credentials  
 Create .env:
 ```
 SLACK_BOT_TOKEN=xoxb-************
@@ -87,7 +87,7 @@ SLACK_SIGNING_SECRET=************
 ```
 Never commit .env.
 
-3️⃣ Build the Knowledge Base (FAISS index)
+3️⃣ Build the Knowledge Base (FAISS index)  
 ```
 python knowledge_base.py
 ```
@@ -102,7 +102,7 @@ knowledge_index/
     └── index.pkl
 ```
 
-4️⃣ Run the Slack Bot
+4️⃣ Run the Slack Bot  
 ```
 python app.py
 ```

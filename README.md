@@ -1,108 +1,94 @@
-🤖 AI Automation Projects by Dishant Makawana
+AI Automation Projects — Dishant Makawana
 
-A growing collection of intelligent automation systems, AI-powered bots, and workflow engines built using Python, APIs, vector search, and real-world business logic.
-Each project here is designed with one purpose: simplify operations through smart automation.
+A collection of practical automation systems, AI-powered assistants, and workflow tools built using Python, vector search, APIs, and real-time logic.
+Each project here demonstrates how automation can simplify operations across business, IT, HR, and support processes.
 
-👨‍💻 About Me
+About Me
 
-Hey! I’m Dishant Makawana, an AI Automation Engineer from Ahmedabad, India.
-I build real business systems, not experiments — automations that actually reduce workload, simplify workflows, and provide intelligence where companies need it.
+I’m Dishant Makawana, an AI Automation Engineer from Ahmedabad, India.
+I build applied automation — real systems that reduce workload, streamline communication, and transform manual tasks into intelligent workflows.
 
-My approach is simple:
+Areas of focus:
 
-“Automation should feel like a superpower — not another tool.”
+AI Assistants & Knowledge Bots
 
-I specialise in:
+Document Search (RAG)
 
-Process automation (operations, HR, sales workflows)
+Business workflow automation
 
-AI assistants & chatbots (Slack/Telegram)
+Data orchestration and reporting
 
-Data orchestration & reporting systems
+Telegram/Slack automation
 
-API integrations & low-code/no-code logic
+Low-code / no-code integrations
 
-Real-time trading/market automation
+Completed Projects
 
-📦 Completed Projects
+Below is a structured, clean table listing all completed automation projects.
 
-Below are the finished, production-ready systems included in this repo:
+Project	Description	Technologies
+AI Knowledge Assistant	Slack-based internal knowledge bot using local vector search (FAISS). Reads PDFs, CSVs & TXT files and answers HR/IT/policy questions. Includes a local Sandbox for evaluation, retraining, and testing.	Python, Flask, Slack Bolt, FAISS, MiniLM, LangChain, Pandas
+Telegram Forwarder Bot	Automatically forwards specific messages between Telegram groups. Useful for signal channels, monitoring, and broadcast groups.	Python, Telethon
+AI Reporter Bot	Pulls real-time data from APIs (CoinGecko, FakeStore), formats reports, and sends AI-style insights to Telegram.	Python, Telethon, Requests
+Business Workflow Orchestrator	Merges sales, leads, and attendance data into unified daily KPI summaries with automated insights delivered to Telegram.	Python, Pandas, Telethon
+Featured Project
+AI Knowledge Assistant (Slack RAG System)
 
-Project	Description	Tech Used
-AI Knowledge Assistant
-	A Slack-based internal RAG assistant that reads company files (PDF/CSV/TXT), indexes them with FAISS, and answers HR/IT/policy questions instantly. Fully local, private, and fast. Comes with a testing Sandbox Dashboard for evaluation and retraining.	Python, Flask, Slack Bolt, FAISS, SentenceTransformers, LangChain, dotenv
-Telegram Forwarder Bot
-	Automatically forwards selected messages from one Telegram group to another — perfect for curated signal channels and team communication.	Python, Telethon, dotenv
-AI Reporter Bot
-	Pulls real-time data from APIs (CoinGecko, FakeStore), formats structured reports, and generates human-like AI insights before sending to Telegram.	Python, Requests, Telethon, dotenv
-Business Workflow Orchestrator
-	Merges and analyzes Sales, Leads, and Attendance data daily, then sends a unified KPI + insights summary automated to Telegram.	Python, Pandas, Telethon, dotenv
-🚀 Featured Project
-🧠 AI Knowledge Assistant + Sandbox Framework
+A complete corporate-style internal knowledge bot designed for HR, IT, Admin, Finance, and Operations teams.
 
-A complete corporate-style internal knowledge system with:
+Key Features
 
-✔️ Hybrid Slack Bot + Local RAG Model
+Local, private document embedding using FAISS
 
-Uses FAISS + MiniLM embeddings to store and retrieve knowledge
+Uses SentenceTransformers (MiniLM) for high-quality vector retrieval
 
-Answers questions based only on company documents — no hallucinations
+Answers are filtered, focused, and reliable
 
-Fully offline & private
+Supports contact detail enrichment (contacts.csv)
 
-✔️ Hard-Embedded & Stable Responses
+Runs fully offline (no paid LLM required)
 
-We ensure consistent, deterministic answers by embedding refined reference answers into the vector store.
+Complete Sandbox Framework for evaluation:
 
-✔️ Intelligent Response Filtering
+Batch question testing
 
-Instead of dumping full paragraphs, the bot returns:
+Automatic similarity scoring
 
-only the relevant lines,
+Retraining pipeline
 
-formatted cleanly,
+Logs & performance tracking
 
-with contact person lookup from a dedicated contacts.csv.
+Why It Works So Well
 
-✔️ Custom Sandbox Environment
+No hallucination: responses only come from embedded documents
 
-Built a separate testing dashboard to:
+Highly stable: deterministic, consistent answers
 
-Collect answers for a batch of test questions
+Modular: can be extended with an LLM rewriter later
 
-Compare them against reference answers
+Production-friendly: clean retrieval + filtered outputs
 
-Generate evaluation reports
+Technology Stack
 
-Automate retraining
-
-Debug bots locally without Slack friction
-
-This was designed to solve the biggest issue in corporate AI: quality control.
-
-🧰 Core Tech Stack
-
-Languages & Frameworks
+Languages & Libraries
 
 Python 3.x
 
 Flask / FastAPI
 
-Slack Bolt
+Slack Bolt SDK
 
 Telethon
 
-AI & ML Tools
+AI & Retrieval
 
 FAISS Vector Store
 
 SentenceTransformers (all-MiniLM-L6-v2)
 
-LangChain Community
+LangChain Community Tools
 
-Custom Retrieval Filters
-
-Data & Automation
+Data & Utilities
 
 Pandas
 
@@ -110,28 +96,29 @@ Requests
 
 dotenv
 
-Ngrok (for Slack dev URLs)
+Ngrok (for Slack event tunneling)
 
-🧠 Philosophy Behind This Repo
+Philosophy Behind This Repository
 
-Keep automations practical
+Build systems, not demos
 
-Build systems that mimic real corporate workflows
+Prioritize real-world workflows over theoretical examples
 
-Design things that save hours, not minutes
+Focus on clarity, modularity, and testability
 
-Make everything modular for reuse
+Develop automation that any business team can use immediately
 
-Showcase the real power of combining Python + AI + APIs
+Ensure solutions are fast, stable, and secure
 
-👨‍💻 Author
+Author
 
 Dishant Makawana
 AI Automation Engineer
-📍 Ahmedabad, India
-🔗 LinkedIn: www.linkedin.com/in/dishant-makawana-4b849b137
+Ahmedabad, India
+LinkedIn: www.linkedin.com/in/dishant-makawana-4b849b137
 
-⭐ Support This Work
+Support
 
-If you find these systems helpful or inspiring:
-Star ⭐ the repo — it helps more than you think!
+If these projects inspire you or help your work:
+Consider starring ⭐ this repository.
+More projects and upgrades are added regularly.

@@ -172,3 +172,14 @@ Multi-turn memory (“and what about sick leave?”)
 Admin dashboard for logs, performance, and accuracy
 Real-time ingestion from GDrive, SharePoint, Confluence
 Deploy on AWS EC2 / Docker
+
+👨‍💻 Author
+Dishant Makawana
+AI Automation & Workflow Developer
+📍 Ahmedabad, Gujarat, India
+
+💡 Building real-world automations that merge data, AI, and human context into practical business systems.
+
+📜 License
+Open for learning and demonstration purposes.
+Use, modify, or expand freely with proper credit.

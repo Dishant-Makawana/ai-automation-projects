@@ -34,11 +34,11 @@ Role: Senior Accountant
 Email: priya.iyer@tcsdemo.com
 ```
 
-🔹 5. Private & Offline
-No external APIs
-No OpenAI
-No cloud calls
-Your documents stay local.
+🔹 5. Private & Offline  
+No external APIs  
+No OpenAI  
+No cloud calls  
+Your documents stay local.  
 
 🔹 6. Sandbox-First Architecture
 Before deploying to Slack, you test everything locally (FastAPI Dashboard + Evaluator + Logs).
@@ -146,32 +146,32 @@ User question → embedding → FAISS search (k=3) → keyword filter → format
 Matches department (HR/IT/Admin/Finance/etc.)
 Appends contact block from contacts.csv.
 
-📊 Evaluation Workflow (Optional but Powerful)
-For scoring bot accuracy:
-✔ batch_test.py
-Posts all questions to Slack automatically.
-✔ evaluate_local.py
-Compares bot answers vs reference answers using semantic similarity.
+📊 Evaluation Workflow (Optional but Powerful)  
+For scoring bot accuracy:  
+✔ batch_test.py  
+Posts all questions to Slack automatically.  
+✔ evaluate_local.py  
+Compares bot answers vs reference answers using semantic similarity.  
 
-Outputs:
-evaluation_report.csv
-accuracy score
-relevance score
-Great for iterative tuning.
+Outputs:  
+evaluation_report.csv  
+accuracy score  
+relevance score  
+Great for iterative tuning.  
 
-🔐 Security & Enterprise Notes
-✔ No OpenAI or cloud API
-✔ Works offline
-✔ Secrets stored in .env
-✔ All documents stay local
-✔ Ideal for internal policy assistants
+🔐 Security & Enterprise Notes  
+✔ No OpenAI or cloud API  
+✔ Works offline  
+✔ Secrets stored in .env  
+✔ All documents stay local  
+✔ Ideal for internal policy assistants  
 
-🚀 Future Enhancements (Roadmap)
-Add GPT/LLaMA rewriter for more human answers
-Multi-turn memory (“and what about sick leave?”)
-Admin dashboard for logs, performance, and accuracy
-Real-time ingestion from GDrive, SharePoint, Confluence
-Deploy on AWS EC2 / Docker
+🚀 Future Enhancements (Roadmap)  
+Add GPT/LLaMA rewriter for more human answers  
+Multi-turn memory (“and what about sick leave?”)  
+Admin dashboard for logs, performance, and accuracy  
+Real-time ingestion from GDrive, SharePoint, Confluence  
+Deploy on AWS EC2 / Docker  
 
 👨‍💻 Author
 Dishant Makawana

@@ -1,0 +1,1032 @@
+{
+  "name": "Trending Topic Research Automation",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "weeks",
+              "triggerAtDay": [
+                1
+              ],
+              "triggerAtHour": 10
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -2976,
+        -336
+      ],
+      "id": "d8bf5bf6-7812-408f-9f80-4f9e3a3e4f5d",
+      "name": "Schedule Trigger1"
+    },
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "{\n  \"keywords\": [\n\"marketing strategy\",\"customer acquisition\",\"lead generation\",\"business automation\",\"workflow optimization\",\n\"social media ads\",\"branding\",\"content marketing\",\"small business growth\",\"sales funnel\",\n\"digital transformation\",\"seo optimization\",\"customer onboarding\",\"email marketing\",\"crm strategy\",\n\"market research\",\"competitor analysis\",\"product positioning\",\"conversion optimization\",\"ecommerce scaling\",\n\"customer retention\",\"pricing strategy\",\"team productivity\",\"business operations\",\"business intelligence\",\n\"ai in business\",\"ai automation\",\"process automation\",\"business analytics\",\"sales forecasting\",\n\"startup funding\",\"cash flow management\",\"financial planning\",\"budget optimization\",\"marketing analytics\",\n\"customer journey\",\"lead nurturing\",\"account-based marketing\",\"google ads\",\"facebook ads\",\n\"linkedin outreach\",\"b2b marketing\",\"b2c marketing\",\"content strategy\",\"viral marketing\",\n\"brand storytelling\",\"performance marketing\",\"influencer marketing\",\"reputation management\",\"growth hacking\",\n\"user experience\",\"website optimization\",\"mobile marketing\",\"customer insights\",\"sales enablement\",\n\"employee training\",\"business scaling\",\"supply chain\",\"product development\",\"demand generation\",\n\"online reputation\",\"sales prospecting\",\"sales outreach\",\"cold email\",\"cold calling\",\n\"copywriting\",\"landing page design\",\"customer feedback\",\"digital commerce\",\"video marketing\",\n\"podcast marketing\",\"community building\",\"referral marketing\",\"loyalty programs\",\"upsell strategy\",\n\"cross sell strategy\",\"affiliate marketing\",\"data-driven decision making\",\"customer segmentation\",\"KPI tracking\",\n\"OKR planning\",\"business compliance\",\"tax planning\",\"financial risk management\",\"SaaS marketing\",\n\"freelancer growth\",\"consulting business\",\"lead qualification\",\"customer service automation\",\"chatbot automation\",\n\"local business marketing\",\"google my business\",\"storefront optimization\",\"sales scripts\",\"value proposition\",\n\"competitive advantage\",\"customer lifetime value\",\"profit margin optimization\",\"brand consistency\",\"innovation strategy\",\n\"AI content creation\",\"business storytelling\",\"remote team management\",\"hybrid teamwork\",\"productivity apps\",\n\"task automation\",\"analytics dashboards\",\"report generation\",\"lead scoring\",\"website analytics\",\n\"creative strategy\",\"product-market fit\",\"churn reduction\",\"customer satisfaction\",\"customer support\",\n\"AI-powered marketing\",\"trend research\",\"topic discovery\",\"consumer behavior\",\"industry insights\",\n\"thought leadership\",\"press release ideas\",\"content ideation\",\"strategic messaging\",\"digital presence\",\n\"organic reach\",\"inbound marketing\",\"paid ads optimization\",\"community engagement\"\n]\n}\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -2752,
+        -336
+      ],
+      "id": "2520bb2a-82a6-4157-87fe-785e88b7d3f6",
+      "name": "Load Keyword List"
+    },
+    {
+      "parameters": {
+        "url": "https://www.googleapis.com/youtube/v3/search",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "part",
+              "value": "snippet"
+            },
+            {
+              "name": "q",
+              "value": "={{$json.keyword}}"
+            },
+            {
+              "name": "maxResults",
+              "value": "10"
+            },
+            {
+              "name": "type",
+              "value": "video"
+            },
+            {
+              "name": "key",
+              "value": "AIzaSyB5Jp6gvEo5SXwtFynE3i2_cse3adA0UVE"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        -2080,
+        -432
+      ],
+      "id": "cd2e32f8-d752-4f14-969e-3343b85eccf5",
+      "name": "YouTube API"
+    },
+    {
+      "parameters": {
+        "jsCode": "const list = $input.first().json.keywords;\nconst random = list[Math.floor(Math.random() * list.length)];\n\nreturn [\n  {\n    json: {\n      keyword: random\n    }\n  }\n];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -2528,
+        -336
+      ],
+      "id": "12d9b42c-513f-4fb9-91d2-728da4e1e0d5",
+      "name": "Pick Random Keyword"
+    },
+    {
+      "parameters": {
+        "url": "https://www.reddit.com/search.json",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "q",
+              "value": "={{ $json[\"keyword\"] }}"
+            },
+            {
+              "name": "limit",
+              "value": "10"
+            },
+            {
+              "name": "sort",
+              "value": "hot"
+            }
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "User-Agent",
+              "value": "n8n-automation/1.0"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        -2096,
+        -192
+      ],
+      "id": "4d13cf72-8344-4a99-957d-1a60d9633b8f",
+      "name": "Reddit API"
+    },
+    {
+      "parameters": {
+        "url": "https://newsapi.org/v2/everything",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "q",
+              "value": "={{ $json[\"keyword\"] }}"
+            },
+            {
+              "name": "pageSize",
+              "value": "10"
+            },
+            {
+              "name": "sortBy",
+              "value": "relevancy"
+            },
+            {
+              "name": "apikey",
+              "value": "141affc501e14bc39d7e58847b988ee6"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        -2064,
+        -688
+      ],
+      "id": "6f3802e0-bfca-40c9-a36c-224d4c9fda8f",
+      "name": "News API"
+    },
+    {
+      "parameters": {
+        "jsCode": "const items = $input.all();\n\nconst normalized = [];\n\nfor (const item of items) {\n  const videos = item.json.items || [];\n\n  for (const v of videos) {\n    normalized.push({\n      source: \"youtube\",\n      title: v.snippet.title,\n      text: v.snippet.description,\n      url: \"https://www.youtube.com/watch?v=\" + (v.id.videoId || \"\"),\n      author: v.snippet.channelTitle,\n      published_at: v.snippet.publishedAt,\n      metrics: {\n        likes: null,\n        views: null,\n        comments: null\n      }\n    });\n  }\n}\n\nreturn normalized.map(n => ({ json: n }));\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1072,
+        -480
+      ],
+      "id": "c50e0f1b-dfc6-42c3-bfb6-7c16df4c2318",
+      "name": "Normalize YouTube"
+    },
+    {
+      "parameters": {
+        "jsCode": "const items = $input.all();\nconst normalized = [];\n\nfor (const item of items) {\n  const posts = item.json.data?.children || [];\n\n  for (const p of posts) {\n    const d = p.data;\n\n    normalized.push({\n      source: \"reddit\",\n      title: d.title || \"\",\n      text: d.selftext || \"\",\n      url: \"https://www.reddit.com\" + (d.permalink || \"\"),\n      author: d.author || \"\",\n      published_at: d.created_utc\n        ? new Date(d.created_utc * 1000).toISOString()\n        : \"\",\n      metrics: {\n        upvotes: d.ups || 0,\n        comments: d.num_comments || 0\n      }\n    });\n  }\n}\n\nreturn normalized.map(n => ({ json: n }));\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1056,
+        -160
+      ],
+      "id": "cf72eeaa-9c43-465d-b9db-708dc2a2c77c",
+      "name": "Normalize Reddit"
+    },
+    {
+      "parameters": {
+        "jsCode": "const items = $input.all();\nconst normalized = [];\n\nfor (const item of items) {\n  const articles = item.json.articles || [];\n\n  for (const a of articles) {\n    normalized.push({\n      source: \"news\",\n      title: a.title || \"\",\n      text: a.description || \"\",\n      url: a.url || \"\",\n      author: a.author || \"\",\n      published_at: a.publishedAt || \"\",\n      metrics: {\n        relevance: null\n      },\n      source_name: a.source?.name || \"\"\n    });\n  }\n}\n\nreturn normalized.map(n => ({ json: n }));\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1056,
+        -704
+      ],
+      "id": "bab6a70c-5f9c-4daf-9503-1949ade14a23",
+      "name": "Normalize News"
+    },
+    {
+      "parameters": {
+        "jsCode": "// 1. Extract raw JSON text from OpenAI or fallback\nconst raw = $json.output?.[0]?.content?.[0]?.text || \"{}\";\n\n// 2. Clean formatting (remove backticks or accidental markdown)\nconst cleaned = raw\n  .replace(/```json/gi, \"\")\n  .replace(/```/g, \"\")\n  .replace(/json\\n/gi, \"\")\n  .trim();\n\n// 3. Parse JSON safely\nlet parsed;\ntry {\n  parsed = JSON.parse(cleaned);\n} catch (e) {\n  parsed = { tweets: [] };\n}\n\n// 4. Extract tweets\nconst tweets = parsed.tweets || [];\n\n// 5. Get keyword\nconst keyword = $node[\"Pick Random Keyword\"].json.keyword || \"\";\n\n// 6. Normalize tweet objects\nreturn tweets.map((t, i) => ({\n  json: {\n    id: \"tweet_\" + (i + 1),\n    text: t.text,\n    author: t.author,\n    favorites: Math.floor(Math.random() * 300),\n    retweets: Math.floor(Math.random() * 100),\n    timestamp: t.timestamp,\n    url: \"https://twitter.com/x/status/\" + (900000 + i),\n    source: \"twitter\",\n    keyword\n  }\n}));\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1056,
+        48
+      ],
+      "id": "248f737e-0a0d-4a91-9ae5-aa572a545ebf",
+      "name": "Normalize Twitter"
+    },
+    {
+      "parameters": {
+        "numberInputs": 4
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        -672,
+        -416
+      ],
+      "id": "caccd16b-6c62-4965-9b00-e87bac8d630d",
+      "name": "Merge All Sources",
+      "alwaysOutputData": false
+    },
+    {
+      "parameters": {
+        "jsCode": "const items = $input.all();\n\nlet summaryText = \"\";\n\nfor (const item of items) {\n  const t = item.json;\n\n  summaryText += `\nSource: ${t.source}\nTitle: ${t.title}\nText: ${t.text}\nAuthor: ${t.author}\nDate: ${t.published_at}\n---\n`;\n}\n\nreturn [\n  {\n    json: {\n      keyword: $node[\"Pick Random Keyword\"].json.keyword,\n      merged_summary: summaryText\n    }\n  }\n];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -400,
+        -352
+      ],
+      "id": "6e71e145-2969-4acb-8c86-af37c96d4515",
+      "name": "Prepare AI Input"
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "GPT-4O-MINI"
+        },
+        "responses": {
+          "values": [
+            {
+              "content": "=Keyword: {{$json[\"keyword\"]}}\n\nMergedSignals:\n{{$json[\"merged_summary\"]}}\n\nYour task:\n1. Produce exactly 10 content ideas for this keyword.\n2. Each idea must include:\n   - index (1-10)\n   - title (6-8 words)\n   - description (1-2 lines)\n   - format (video/blog/social)\n   - priority (1-10)\n   - rationale (one line based on signals)\n3. Output ONLY valid JSON in this schema:\n\n{\n  \"ideas\": [\n    {\n      \"index\": 1,\n      \"title\": \"\",\n      \"description\": \"\",\n      \"format\": \"\",\n      \"priority\": 0,\n      \"rationale\": \"\"\n    }\n  ]\n}\n"
+            },
+            {
+              "role": "system",
+              "content": "You are a senior content strategist. \nProduce structured, strategic, data-driven content ideas based solely on the provided merged signals.\nOutput valid JSON only.\n"
+            }
+          ]
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 2,
+      "position": [
+        -192,
+        -336
+      ],
+      "id": "e7da6c44-13ce-439f-aed8-012e0006a846",
+      "name": "Message a model",
+      "credentials": {
+        "openAiApi": {
+          "id": "nTA6envp81ecuPzp",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// 1. Extract raw JSON text from OpenAI nested output\nlet raw = $json.output?.[0]?.content?.[0]?.text || \"\";\n\n// 2. Clean formatting (remove backticks or accidental markdown)\nraw = raw\n  .replace(/```json/gi, \"\")\n  .replace(/```/g, \"\")\n  .replace(/json\\n/gi, \"\")\n  .trim();\n\nlet parsed;\n\ntry {\n  parsed = JSON.parse(raw);\n} catch (e) {\n  throw new Error(\"AI output is not valid JSON after cleaning. Raw: \" + raw);\n}\n\n// 3. Extract ideas array\nconst ideas = parsed.ideas || [];\n\n// 4. Extract keyword from the keyword node\nconst keyword = $node[\"Pick Random Keyword\"].json.keyword || \"\";\n\n// 5. Normalize into final structure for Sheets + Trello\nreturn ideas.map(i => ({\n  json: {\n    RunDate: new Date().toISOString(),\n    Keyword: keyword,\n    IdeaIndex: i.index,\n    Title: i.title,\n    Description: i.description,\n    Format: i.format,\n    Priority: i.priority,\n    Rationale: i.rationale\n  }\n}));\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        96,
+        -352
+      ],
+      "id": "7b8eea54-0670-4b4b-9c31-0deccc4dcb30",
+      "name": "Parse AI Output"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1kBhLUor994zfFfoFg54xL0kJ2PVK5t2EJGev5k5ChqU",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1kBhLUor994zfFfoFg54xL0kJ2PVK5t2EJGev5k5ChqU/edit?gid=0#gid=0",
+          "mode": "url"
+        },
+        "columns": {
+          "mappingMode": "autoMapInputData",
+          "value": {
+            "RunDate": "{{$json[\"RunDate\"]}}",
+            "Keyword": "{{$json[\"Keyword\"]}}",
+            "IdeaIndex": "{{$json[\"IdeaIndex\"]}}",
+            "Title": "{{$json[\"Title\"]}}",
+            "Description": "{{$json[\"Description\"]}}",
+            "Format": "{{$json[\"Format\"]}}",
+            "Priority": "{{$json[\"Priority\"]}}",
+            "Rationale": "{{$json[\"Rationale\"]}}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "RunDate",
+              "displayName": "RunDate",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Keyword",
+              "displayName": "Keyword",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "IdeaIndex",
+              "displayName": "IdeaIndex",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Title",
+              "displayName": "Title",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Description",
+              "displayName": "Description",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Format",
+              "displayName": "Format",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Priority",
+              "displayName": "Priority",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Rationale",
+              "displayName": "Rationale",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        352,
+        -464
+      ],
+      "id": "16bb415f-2677-4c1f-b169-912d6e0922e3",
+      "name": "Append Content Ideas",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "z1rcU0vsQYfLrhVU",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "e3247641-b3e1-41da-9b6a-310b7048273b",
+              "leftValue": "={{ $json[\"items\"].length }}\n",
+              "rightValue": 0,
+              "operator": {
+                "type": "number",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -1840,
+        -416
+      ],
+      "id": "19be9a08-0172-4901-b0f5-936fe3215bf9",
+      "name": "YouTube Error Check."
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "075ffa56-5d2d-43bf-bc23-11a60d3a4add",
+              "name": "items",
+              "value": "[   {     \"title\": \"YouTube fallback content\",     \"description\": \"No data returned. Default YouTube insight used.\",     \"stats\": {       \"views\": 0,       \"likes\": 0,       \"comments\": 0     }   } ]",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -1504,
+        -512
+      ],
+      "id": "e7a834aa-fbfb-4506-af4a-673072da86d6",
+      "name": "YouTube Fallback"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "6a057284-a402-4385-bc60-3552607d4d4f",
+              "name": "articles",
+              "value": "[   {     \"title\": \"News fallback content\",     \"description\": \"No news articles available.\",     \"source\": \"fallback\"   } ]",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -1520,
+        -752
+      ],
+      "id": "5ccecd43-775d-4269-a840-d14195d3ba43",
+      "name": "News Fallback"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "739216db-3d6e-45c2-ab35-17c946e5d7eb",
+              "leftValue": "={{ $json[\"articles\"].length }}",
+              "rightValue": 0,
+              "operator": {
+                "type": "number",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -1792,
+        -688
+      ],
+      "id": "357a1f18-92e8-4b1a-91d8-005ce5fc1784",
+      "name": "News Error Check"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "a7b5cde1-b12b-4bae-868c-7e24eb2557db",
+              "leftValue": "={{ $json[\"data\"][\"children\"].length }}",
+              "rightValue": 0,
+              "operator": {
+                "type": "number",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -1776,
+        -144
+      ],
+      "id": "db072750-c26f-4f56-a84c-e33bdda7228d",
+      "name": "Reddit Error Check"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "be299562-a929-42f1-9901-4fa324a3217e",
+              "name": "data",
+              "value": "{   \"children\": [     {       \"data\": {         \"title\": \"Reddit fallback content\",         \"selftext\": \"No Reddit posts found.\",         \"id\": \"fallback\"       }     }   ] }",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -1520,
+        -208
+      ],
+      "id": "54ef6879-1cd9-4a2c-bf25-7e9d34491d33",
+      "name": "Reddit Fallback"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "8eb4e92b-f861-4ca3-afca-af13b8205e3d",
+              "leftValue": "={{ $json[\"tweets\"].length }}",
+              "rightValue": 0,
+              "operator": {
+                "type": "number",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -1792,
+        144
+      ],
+      "id": "2b4c37d7-2c7b-4398-a280-6b90279f4472",
+      "name": "Twitter Error Check"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "045781e1-4a32-43e2-a6df-207b3f410252",
+              "name": "output",
+              "value": "{   \"output\": [     {       \"content\": [         {           \"text\": \"{ \\\"tweets\\\": [ { \\\"text\\\": \\\"Fallback: No tweets generated.\\\", \\\"author\\\": \\\"fallback_bot\\\", \\\"timestamp\\\": \\\"2025-01-01T00:00:00Z\\\" } ] }\"         }       ]     }   ] }",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -1456,
+        48
+      ],
+      "id": "ac32a260-b349-4f04-bb02-e414d1fa6085",
+      "name": "Twitter Fallback"
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "GPT-4O-MINI"
+        },
+        "responses": {
+          "values": [
+            {
+              "content": "=Generate 10 realistic, short, human-like tweets about the keyword: \"{{ $json[\"keyword\"] }}\".\n\nEach tweet must be unique, natural, and feel like real reactions to trends, insights, or news related to the keyword.\n\nReturn ONLY valid JSON:\n\n{\n  \"tweets\": [\n    {\n      \"text\": \"\",\n      \"author\": \"\",\n      \"timestamp\": \"\"\n    }\n  ]\n}\n\nRules:\n- No markdown or backticks.\n- \"author\" must look like a real Twitter username (e.g., _trendwatcher01, ai_insider, crypto_alpha)\n- \"timestamp\" must be ISO format (new Date().toISOString())\n- No emojis if the model adds too many — keep it natural.\n- No explanations.\n"
+            }
+          ]
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 2,
+      "position": [
+        -2208,
+        112
+      ],
+      "id": "3c767ee0-34c5-409a-97b7-1913256b1571",
+      "name": "TWITTER GENERATOR",
+      "credentials": {
+        "openAiApi": {
+          "id": "nTA6envp81ecuPzp",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "listId": "691db2ca7284907346bd42ef",
+        "name": "={{$json[\"Title\"]}}",
+        "description": "=Keyword: {{$json[\"Keyword\"]}}\nPriority: {{$json[\"Priority\"]}}\n\nDescription:\n{{$json[\"Description\"]}}\n\nRationale:\n{{$json[\"Rationale\"]}}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.trello",
+      "typeVersion": 1,
+      "position": [
+        400,
+        -256
+      ],
+      "id": "f672193f-9bed-4c2c-85e1-ac45bdac53ef",
+      "name": "Create a card",
+      "credentials": {
+        "trelloApi": {
+          "id": "nxZamOj9PUinqpFQ",
+          "name": "Trello account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Schedule Trigger1": {
+      "main": [
+        [
+          {
+            "node": "Load Keyword List",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Load Keyword List": {
+      "main": [
+        [
+          {
+            "node": "Pick Random Keyword",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Pick Random Keyword": {
+      "main": [
+        [
+          {
+            "node": "YouTube API",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Reddit API",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "News API",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "TWITTER GENERATOR",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "YouTube API": {
+      "main": [
+        [
+          {
+            "node": "YouTube Error Check.",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Reddit API": {
+      "main": [
+        [
+          {
+            "node": "Reddit Error Check",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Normalize Reddit": {
+      "main": [
+        [
+          {
+            "node": "Merge All Sources",
+            "type": "main",
+            "index": 2
+          }
+        ]
+      ]
+    },
+    "News API": {
+      "main": [
+        [
+          {
+            "node": "News Error Check",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Normalize News": {
+      "main": [
+        [
+          {
+            "node": "Merge All Sources",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Normalize YouTube": {
+      "main": [
+        [
+          {
+            "node": "Merge All Sources",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Normalize Twitter": {
+      "main": [
+        [
+          {
+            "node": "Merge All Sources",
+            "type": "main",
+            "index": 3
+          }
+        ]
+      ]
+    },
+    "Merge All Sources": {
+      "main": [
+        [
+          {
+            "node": "Prepare AI Input",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare AI Input": {
+      "main": [
+        [
+          {
+            "node": "Message a model",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Message a model": {
+      "main": [
+        [
+          {
+            "node": "Parse AI Output",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse AI Output": {
+      "main": [
+        [
+          {
+            "node": "Append Content Ideas",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Create a card",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "YouTube Error Check.": {
+      "main": [
+        [
+          {
+            "node": "YouTube Fallback",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Normalize YouTube",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "YouTube Fallback": {
+      "main": [
+        [
+          {
+            "node": "Normalize YouTube",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "News Fallback": {
+      "main": [
+        [
+          {
+            "node": "Normalize News",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "News Error Check": {
+      "main": [
+        [
+          {
+            "node": "News Fallback",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Normalize News",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Reddit Error Check": {
+      "main": [
+        [
+          {
+            "node": "Reddit Fallback",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Normalize Reddit",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Reddit Fallback": {
+      "main": [
+        [
+          {
+            "node": "Normalize Reddit",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Twitter Error Check": {
+      "main": [
+        [
+          {
+            "node": "Twitter Fallback",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Normalize Twitter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Twitter Fallback": {
+      "main": [
+        [
+          {
+            "node": "Normalize Twitter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "TWITTER GENERATOR": {
+      "main": [
+        [
+          {
+            "node": "Twitter Error Check",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "0535fa9a-5a76-4e55-beac-375eb88a3985",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "d2b8e743e3e93938160b285684aafa635bd49b66f56c7ed10e5568463bb90e1e"
+  },
+  "id": "LEtJIVmAbNd3QsvW",
+  "tags": [
+    {
+      "updatedAt": "2025-11-18T21:20:14.392Z",
+      "createdAt": "2025-11-18T21:20:14.392Z",
+      "id": "zCvzPch11hCsN33Y",
+      "name": "AI-Powered Research"
+    }
+  ]
+}

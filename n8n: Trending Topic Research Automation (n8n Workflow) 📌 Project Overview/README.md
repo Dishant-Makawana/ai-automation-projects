@@ -86,7 +86,6 @@ AI synthesizes insights beyond raw data scraping.
 📦 Folder Contains
 
 - n8n workflow (.json export)
-- Video walkthrough file
 - Screenshots:
 - Google Sheet sample
 - Trello sample
@@ -99,6 +98,9 @@ https://docs.google.com/spreadsheets/d/1kBhLUor994zfFfoFg54xL0kJ2PVK5t2EJGev5k5C
 
 Looker Studio Dashboard (View Only)
 https://lookerstudio.google.com/reporting/e1419103-7399-4078-8cce-1e43d7551a60
+
+Video walkthrough:
+https://drive.google.com/file/d/1AWOmcpuy3NJk1R5Go5FfKFPHRWYlGCHU/view?usp=sharing
 
 📝 Notes
 All sensitive data has been removed.

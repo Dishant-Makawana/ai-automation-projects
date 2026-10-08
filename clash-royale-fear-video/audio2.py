@@ -102,9 +102,9 @@ pad(T_SKEL, T_MONT, [440, 466.2, 659.3, 698.5], 3500, 0, .2, trem=7.5, wave_='si
 choir(220, 5.0, .14, T_SKEL + .1); choir(233.1, 4.8, .1, T_SKEL + .2); choir(329.6, 4.5, .1, T_SKEL + .5)
 tc = T_SKEL + .9
 while tc < T_MONT - .1:
-    dens = np.interp(tc, [T_SKEL + .9, T_MONT], [8, 60])
+    dens = np.interp(tc, [T_SKEL + .9, T_MONT], [5, 14])
     real(['skeleton_step_02', 'skele_warrior_step_02'][int(rng.integers(0, 2))], tc, rng.uniform(.18, .5), rng.uniform(-1, 1), rate=rng.uniform(.9, 1.15), wet=.25); tc += rng.exponential(1 / dens)
-real('skeleton_deploy_03', T_SKEL + 2.6, 1.0, wet=.4); real('deploy_skeleton_01', T_SKEL + 2.7, .8)
+real('king_laughter_01', T_SKEL + 2.9, .9, wet=.3); put(dry, T_SKEL + 4.0, boom(3, 120, 28, .9, 1.2), 1.0); put(send, T_SKEL + 4.0, boom(3, 120, 28, .9, 1.2), .6)
 for ts in (T_SKEL + 3.4, T_SKEL + 4.0, T_SKEL + 4.5): real('skeleton_atk_03', ts, .6, rng.uniform(-.6, .6))
 put(dry, T_SKEL + .8, norm(filt(noise(4.5), lo=700, hi=100) * np.linspace(.1, 1, int(4.5 * SR)) ** 1.5), .3)
 for ts in (T_SKEL + 2.0, T_SKEL + 3.3, T_SKEL + 4.3): put(dry, ts, boom(1.5, 80, 28, .5, 2.5), .6)

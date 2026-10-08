@@ -363,27 +363,22 @@ def scene_skel(t, fi):
     img = backdrop(t, (4, 12, 10), (24, 110, 70), floor_speed=60)
     rays(G1, t, 540, -60, (14, 80, 40), 7, 1.3, 2000, 1.0); bokeh(G1, t, (110, 255, 160)); embers(G2, t, 70, (130, 255, 170), 8, 50)
     img = fog(img, t, .42, (40, 100, 70), 30)
-    card_slam(img, G1, 'skel', u, 330, 960, 440); card_slam(img, G1, 'army', u, 750, 960, 440)
+    card_slam(img, G1, 'skel', u)
     if u >= .7:
-        w = u - .7; items = []
-        for (x0, d, sp, ph, flip) in SKP:
-            tt = w - d
-            if tt < 0: continue
-            y = 1000 + (tt * 520 * sp) ** 1.0 - 120
-            s = clamp((y + 200) / 1500); items.append((y, x0, 160 + 360 * s ** 1.3, ph, flip, tt))
-        for y, x0, ww, ph, flip, tt in sorted(items):
-            x = 540 + (x0 - 540) * (.35 + 1.2 * clamp((y + 200) / 1500)); hop = abs(math.sin(t * 9 + ph)) * ww * .06
-            sp_ = HERO['skel']['im']
-            sp = sprite(sp_, ww)
-            if flip: sp = sp.transpose(Image.FLIP_LEFT_RIGHT)
-            shadow(img, x, y + 6, ww * .3, ww * .05, 120); glow_from(G1, sp, x - sp.width / 2, y - sp.height - hop, (40, 255, 130), 30, .1)
+        w = u - .7
+        for x0, d, ph in sorted([(300, .0, 0.), (540, .35, 1.7), (780, .15, 3.1)], key=lambda q: q[0]):
+            p_ = sstep((w - d) / 1.6)
+            if w < d: continue
+            y = lerp(930, 1380, p_); ww = lerp(150, 380, p_); x = lerp(540 + (x0 - 540) * .3, x0, p_)
+            hop = abs(math.sin(t * (9 if p_ < 1 else 3) + ph)) * ww * (.07 if p_ < 1 else .02)
+            sp = sprite(HERO['skel']['im'], ww); shadow(img, x, y + 6, ww * .3, ww * .05, 130); glow_from(G1, sp, x - sp.width / 2, y - sp.height - hop, (40, 255, 130), 30, .1)
             paste(img, sp, x - sp.width / 2, y - sp.height - hop)
     img = zoom_blur(img, .05 * max(0, 1 - (u - .7) / .25) if .7 < u < .95 else 0)
-    slam(img, t, T_SKEL + .75, T_SKEL + 5.0, 'SKELETONS', 300, 160, (225, 255, 215), seed=5)
-    caption(img, t, T_SKEL + 1.0, T_SKEL + 5.0, 'COMMON - 1 ELIXIR   |   EPIC - 3 ELIXIR', 450, 40, (200, 220, 255), rot=0)
-    caption(img, t, T_SKEL + 1.4, T_SKEL + 2.6, '3 SKELETONS. 1 ELIXIR.', 1500, 84, (255, 255, 255))
-    caption(img, t, T_SKEL + 2.7, T_SKEL + 3.7, 'NOW 15 FOR 3.', 1500, 96, (190, 255, 210))
-    caption(img, t, T_SKEL + 3.7, T_SKEL + 5.0, "AND YOU'RE ALREADY LATE.", 1500, 70, (255, 255, 255))
+    slam(img, t, T_SKEL + .75, T_SKEL + 5.0, 'SKELETONS', 300, 158, (225, 255, 215), seed=5)
+    cardtag(img, 'skel', t, T_SKEL + 1.0, T_SKEL + 5.0, 450)
+    caption(img, t, T_SKEL + 1.4, T_SKEL + 2.7, 'SMALLEST. WEAKEST.\n1 ELIXIR.', 1480, 78, (255, 255, 255))
+    caption(img, t, T_SKEL + 2.8, T_SKEL + 3.9, 'OH NO. SO SCARY...', 1500, 84, (190, 255, 210), rot=2)
+    caption(img, t, T_SKEL + 4.0, T_SKEL + 5.0, '...YET YOU STILL PANIC.', 1500, 76, (255, 120, 110))
     fl = .35 * max(0, 1 - u / .08) if u < .08 else 0
     return post(img, G1, G2, tint=(.9, 1.08, .95), sat=1.0, con=1.2, bright=.88, vig=1.0, flash=fl, ca=int(amp * .12), seed=fi, redpulse=p * .3, shake=shake_off(amp, fi))
 
@@ -399,7 +394,7 @@ def scene_mont(t, fi):
         for _ in range(6): draw_bolt(img, G1, G2, tip, (tip[0] + rr.normal(0, 400), tip[1] + rr.normal(0, 400)), rr, 6, jag=90, branches=0)
     elif kind == 'musk': Hero('musk', img, G1, 540, 1470, 1260 * z, bob, glow=col, gk=.18)
     elif kind == 'golem': Hero('golem', img, G1, 540, 1480, 1240 * z, bob, glow=col, gk=.16)
-    elif kind == 'skel': Hero('skarmy', img, G1, 540, 1480, 1100 * z, bob, glow=col, gk=.18)
+    elif kind == 'skel': Hero('skel', img, G1, 540, 1480, 980 * z, bob, glow=col, gk=.18)
     else:
         for i, key in enumerate(['spark', 'musk', 'golem', 'skel']):
             sp = sprite(CARD[key], 238); x = 135 + i * 270; y = 960 + (-40 if i % 2 else 0) + np.random.default_rng(fi + i).normal(0, 5)

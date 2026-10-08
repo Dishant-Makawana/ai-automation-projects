@@ -5,7 +5,7 @@ from timeline import *
 
 W, H = 1080, 1920
 WW, WH = 1080, 2400
-NF = int(DUR * FPS)
+NF = int((38.0 - 2.8) * FPS)
 OUT = 'frames'
 FONT = '/usr/share/fonts/opentype/inter/Inter-BlackItalic.otf'
 INK = (22, 12, 40)
@@ -281,18 +281,9 @@ def skeleton(d, G2, x, y, s, t, ph=0.0):
 # ------------------------------------------------------------------ UI
 def ui(img, t, tremble):
     d = ImageDraw.Draw(img)
-    rrect(d, 380, 60, 700, 150, 28, (30, 20, 50), 5, (190, 40, 60))
-    text(img, 'OVERTIME', W / 2, 90, 34, (255, 90, 100), sw=3, shadow=False)
-    sec = max(0, 9 - int(max(0, t - 4.0))); text(img, f'0:0{sec}', W / 2, 128, 40, (255, 255, 255), sw=3, shadow=False)
-    r = np.random.default_rng(int(t * 30))
-    for i in range(4):
-        x0 = 70 + i * 240; jx, jy = r.normal(0, tremble, 2)
-        rrect(d, x0 + jx, 1560 + jy, x0 + 200 + jx, 1790 + jy, 18, (46, 34, 84), 6, (150, 110, 230))
-        ell(d, x0 + 100 + jx, 1680 + jy, 56, 56, (28, 20, 52), 4, (110, 80, 190))
-        text(img, '?', x0 + 100 + jx, 1675 + jy, 70, (160, 130, 230), sw=3, shadow=False)
-        ell(d, x0 + 30 + jx, 1580 + jy, 24, 24, (230, 80, 220), 4); text(img, str(3 + i), x0 + 30 + jx, 1578 + jy, 28, (255, 255, 255), sw=3, shadow=False)
-    rrect(d, 70, 1830, 1010, 1880, 20, (24, 16, 44), 5, INK); rrect(d, 76, 1836, 1004, 1874, 16, (210, 70, 230), 0, (210, 70, 230))
-    ell(d, 70, 1855, 42, 42, (230, 80, 240), 5); text(img, '10', 70, 1852, 44, (255, 255, 255), sw=4, shadow=False)
+    rrect(d, 380, 235, 700, 325, 28, (30, 20, 50), 5, (190, 40, 60))
+    text(img, 'OVERTIME', W / 2, 265, 34, (255, 90, 100), sw=3, shadow=False)
+    sec = 9 if t < 4.0 else 8; text(img, f'0:0{sec}', W / 2, 303, 40, (255, 255, 255), sw=3, shadow=False)
 
 # ------------------------------------------------------------------ post
 yy, xx = np.mgrid[0:H, 0:W].astype(np.float32)
@@ -328,25 +319,29 @@ def shake_off(amp, fi):
 
 # ------------------------------------------------------------------ scenes
 def new_layers(): return Image.new('RGBA', (W, H), (0, 0, 0, 0)), Image.new('RGB', (W // 2, H // 2), (0, 0, 0)), Image.new('RGB', (W // 2, H // 2), (0, 0, 0))
-def comp(img, lay): img.paste(lay, (0, 0), lay); return img
+def comp(img, lay):
+    A = lay.getchannel('A'); a = np.asarray(lay).astype(np.float32); al = a[..., 3] / 255
+    rows = np.where(al.max(1) > .1)[0]
+    if len(rows):
+        y0, y1 = rows.min(), rows.max()
+        g = 1.14 - .34 * np.clip((yy - y0) / (y1 - y0 + 1), 0, 1)
+        bl = np.asarray(A.filter(ImageFilter.GaussianBlur(9))).astype(np.float32) / 255
+        rim = np.clip(al - bl, 0, 1)[..., None] * np.array([150, 175, 255], np.float32) * 1.5
+        a[..., :3] = np.clip(a[..., :3] * g[..., None] + rim * (al[..., None] > .6), 0, 255)
+        lay = Image.fromarray(a.astype(np.uint8), 'RGBA')
+    img.paste(lay, (0, 0), lay); return img
 
 def scene_intro(t, fi):
     p = pulse_at(t); G0 = Image.new('RGB', (W // 2, H // 2)); G1, G2 = G0.copy(), G0.copy()
-    if t < 3.2:
-        img = Image.new('RGB', (W, H), (4, 3, 10)); embers(G2, t, 40, (150, 40, 40), 3, 30)
-        text(img, 'Chahe tum kitne bhi', W / 2, 800, 84, (230, 230, 245), alpha=clamp((t - .6) / .6) * clamp((3.1 - t) / .3), rot=0, shadow=False)
-        text(img, 'BADE PLAYER ho...', W / 2, 940, 120, (255, 205, 70), alpha=clamp((t - 1.5) / .5) * clamp((3.1 - t) / .3), scale=1 + .3 * (1 - clamp((t - 1.5) / .3)), rot=-3)
-        return post(img, G1, G2, vig=1.0, seed=fi, redpulse=p * .7, tint=(1, .95, 1.05))
-    u = t - 3.2; z = lerp(1.0, 1.25, u / 3.8)
-    sx, sy = shake_off(p * 3, fi)
-    img, w2s = cam_view(540, lerp(1550, 1380, u / 3.8), z, sx, sy)
-    img = fog(img, t, .35, (70, 90, 140))
-    embers(G2, t, 50, (255, 140, 50), 4, 40)
-    img = ui(img, t, .6 + 2.5 * clamp((t - 4) / 3)) or img
-    ui_img = img
-    caption(img, t, 4.1, 6.8, 'Phir bhi... kuch cards\ndil ki dhadkan\nrok dete hain.', 560, 82, (255, 255, 255))
-    f = clamp(u / .9) * clamp((6.95 - t) / .2)
-    return post(img, G1, G2, tint=(.78, .88, 1.15), sat=.8, con=1.15, bright=.78, vig=.9, seed=fi, redpulse=p * .6 * clamp((t - 4) / 2), fade=f)
+    z = 1.08 + .3 * max(0, 1 - t / .5) ** 2 + .12 * t / 4.15
+    sx, sy = shake_off(p * 3 + 30 * max(0, 1 - t / .3), fi)
+    img, w2s = cam_view(540, lerp(1450, 1380, t / 4.15), z, sx, sy)
+    img = fog(img, t, .35, (70, 90, 140)); embers(G2, t, 50, (255, 140, 50), 4, 40)
+    ui(img, t, 0)
+    slam(img, t, -0.1, 1.95, 'KITNA BHI\nBADE PLAYER HO...', 700, 100, (255, 205, 70))
+    caption(img, t, 2.05, 4.1, 'In 4 cards se\ndil ki dhadkan\nrok jaati hai.', 700, 108, (255, 255, 255))
+    fl = clamp(1 - t / .12) * .3
+    return post(img, G1, G2, tint=(.8, .9, 1.15), sat=.85, con=1.18, bright=.72, vig=.9, flash=fl, ca=int(14 * max(0, 1 - t / .25)), seed=fi, redpulse=p * .6)
 
 def tower_pos(w2s, which):
     return w2s(*{'king': (540, 2090), 'pr': (860, 1800)}[which])
@@ -356,7 +351,7 @@ def scene_sparky(t, fi):
     after = t - ZAP
     amp = c * 9 + impact(t, [ZAP], .22) * 46
     sx, sy = shake_off(amp, fi)
-    img, w2s = cam_view(540, 1450, 1.15, sx, sy)
+    img, w2s = cam_view(540, 1450, 1.15 + .12 * clamp(u / 5.7), sx, sy)
     img = fog(img, t, .4, (60, 70, 110))
     lay, G1, G2 = new_layers(); d = ImageDraw.Draw(lay)
     ap = sstep(u / 3.3); s = lerp(88, 170, ap); gy = lerp(960, 1270, ap); sxp = lerp(500, 400, ap)
@@ -378,15 +373,15 @@ def scene_sparky(t, fi):
     dim = .45 if pre else 1.0
     fl = clamp(1 - after / .45) ** 2 if after >= 0 else 0
     slam(img, t, 8.0, 12.9, 'SPARKY', 300, 270, (255, 214, 64))
-    caption(img, t, 8.9, 10.35, 'Dekho... charge ho raha hai...', 1560, 62, (255, 240, 200))
-    caption(img, t, 11.0, 12.8, 'Ek shot. Sab khatam.', 1520, 100, (255, 255, 255))
+    caption(img, t, 8.9, 10.35, 'Dekho... charge ho raha hai...', 1420, 62, (255, 240, 200))
+    caption(img, t, 11.0, 12.8, 'Ek shot. Sab khatam.', 1420, 100, (255, 255, 255))
     return post(img, G1, G2, tint=(1.0, .95, 1.08) if after < 0 else (1.05, .95, .9), sat=.95, con=1.2, bright=dim * .75, vig=.95, flash=fl, flashcol=(1, .96, .8), ca=int(amp * .25), glitch=clamp(1 - after / .5) if 0 <= after < .5 else 0, seed=fi, redpulse=p * .3)
 
 def scene_musk(t, fi):
     u = t - MUSK_START; p = pulse_at(t)
     amp = impact(t, SHOTS, .2) * 30 + 3
     sx, sy = shake_off(amp, fi)
-    img, w2s = cam_view(700, 1500, 1.2, sx, sy)
+    img, w2s = cam_view(700, 1500, 1.2 + .1 * clamp(u / 5.5), sx, sy)
     img = fog(img, t, .4, (90, 50, 110))
     lay, G1, G2 = new_layers(); d = ImageDraw.Draw(lay)
     ap = sstep(u / 3.8); k = lerp(.8, 1.15, ap) if u < 3.8 else 1.15 + .0 * (u - 3.8)
@@ -418,8 +413,8 @@ def scene_musk(t, fi):
     if t > SHOTS[0]: smoke(img, t, pr[0], pr[1], SHOTS[0] + .1, 12, 3, 110)
     embers(G2, t, 50, (255, 110, 200), 6, 40)
     slam(img, t, 13.7, 18.3, '3 MUSKETEERS', 300, 128, (255, 98, 200))
-    caption(img, t, 14.7, 16.3, 'Teen nishane. Ek saath.', 1540, 84, (255, 230, 250))
-    caption(img, t, 17.45, 18.4, 'Bachne ka rasta nahi.', 1540, 84, (255, 255, 255))
+    caption(img, t, 14.7, 16.3, 'Teen nishane. Ek saath.', 1420, 84, (255, 230, 250))
+    caption(img, t, 17.45, 18.4, 'Bachne ka rasta nahi.', 1420, 84, (255, 255, 255))
     fl = max([clamp(1 - (t - s0) / .12) for s0 in SHOTS if t >= s0] + [0]) * .45
     return post(img, G1, G2, tint=(1.12, .86, 1.12), sat=.95, con=1.22, bright=.8, vig=.95, flash=fl, flashcol=(1, .8, .9), ca=int(amp * .2), seed=fi, redpulse=p * .4)
 
@@ -430,7 +425,7 @@ def scene_golem(t, fi):
     u = t - GOLEM_START; p = pulse_at(t); prog = golem_state(t)
     amp = impact(t, STOMPS, .3, [1, 1, 1.1, 1.2, 1.3, 2.2]) * 22
     sx, sy = shake_off(amp, fi)
-    img, w2s = cam_view(540, 1400, 1.2, sx, sy)
+    img, w2s = cam_view(540, 1400, 1.2 + .1 * clamp(u / 6), sx, sy)
     img = fog(img, t, .45, (110, 70, 50), 18)
     lay, G1, G2 = new_layers(); d = ImageDraw.Draw(lay)
     s = lerp(62, 160, prog); gy = lerp(850, 1400, prog) + sy * .3
@@ -451,8 +446,8 @@ def scene_golem(t, fi):
             dl = dl.filter(ImageFilter.GaussianBlur(14)); img.paste(dl, (0, 0), dl)
     embers(G2, t, 70, (255, 120, 30), 7, 55)
     slam(img, t, 19.3, 24.3, 'GOLEM', 300, 290, (255, 150, 44))
-    caption(img, t, 20.3, 22.3, 'Dheere chalta hai...', 1560, 90, (255, 235, 210))
-    caption(img, t, 22.5, 24.3, 'par rukta nahi.', 1560, 100, (255, 255, 255))
+    caption(img, t, 20.3, 22.3, 'Dheere chalta hai...', 1440, 90, (255, 235, 210))
+    caption(img, t, 22.5, 24.3, 'par rukta nahi.', 1440, 100, (255, 255, 255))
     fl = clamp(1 - (t - STOMPS[-1]) / .18) * .45 if t >= STOMPS[-1] else 0
     return post(img, G1, G2, tint=(1.08, .94, .86), sat=.95, con=1.25, bright=.82, vig=1.0, flash=fl, flashcol=(1, .85, .6), ca=int(amp * .15), seed=fi, redpulse=p * .5)
 
@@ -462,7 +457,7 @@ def scene_skel(t, fi):
     u = t - SKEL_START; p = pulse_at(t)
     amp = 4 + 10 * clamp(u / 5)
     sx, sy = shake_off(amp, fi)
-    img, w2s = cam_view(540, 1400, 1.2, sx, sy)
+    img, w2s = cam_view(540, 1400, 1.2 + .08 * clamp(u / 5.4), sx, sy)
     img = fog(img, t, .5, (50, 110, 80), 30)
     lay, G1, G2 = new_layers(); d = ImageDraw.Draw(lay)
     radial(G1, W / 2, 1100, 850, (6, 38, 18))
@@ -478,8 +473,8 @@ def scene_skel(t, fi):
     img = comp(img, lay)
     embers(G2, t, 60, (120, 255, 170), 8, 40)
     slam(img, t, 25.3, 29.8, 'SKELETON\nARMY', 330, 190, (226, 255, 206))
-    caption(img, t, 26.5, 28.2, 'Gino... gino...', 1580, 100, (255, 255, 255))
-    caption(img, t, 28.4, 29.85, 'ginte reh jaoge.', 1580, 100, (190, 255, 210))
+    caption(img, t, 26.5, 28.2, 'Gino... gino...', 1440, 100, (255, 255, 255))
+    caption(img, t, 28.4, 29.85, 'ginte reh jaoge.', 1440, 100, (190, 255, 210))
     return post(img, G1, G2, tint=(.85, 1.1, .95), sat=.9, con=1.2, bright=.8, vig=1.0, ca=int(amp * .12), seed=fi, redpulse=p * .3)
 
 def scene_mont(t, fi):
@@ -506,27 +501,30 @@ def scene_mont(t, fi):
         sparky(d, G1, G2, 200, 1300, 90, .8, t); golem(d, G2, 880, 1300, 70, t, 1.0); musketeer(d, G2, 440, 1290, 80, t); skeleton(d, G2, 640, 1290, 90, t, 1)
     img = comp(img, lay)
     text_sz = 150 if kind in ('musk', 'skel') else (230 if kind != 'all' else 130)
-    text(img, name if kind != 'skel' else 'SKELETON\nARMY', W / 2 + np.random.normal(0, 4), 1580 if kind != 'all' else 1000, (text_sz if kind != 'musk' else 120) if kind != 'skel' else 150, col, alpha=1, scale=1 + .5 * max(0, 1 - lt / .1), rot=-3)
+    text(img, name if kind != 'skel' else 'SKELETON\nARMY', W / 2 + np.random.normal(0, 4), 1440 if kind != 'all' else 1000, (text_sz if kind != 'musk' else 120) if kind != 'skel' else 150, col, alpha=1, scale=1 + .5 * max(0, 1 - lt / .1), rot=-3)
     if kind == 'all' and lt > .1:
         text(img, 'DAR.', W / 2, 330, 300, (255, 255, 255), alpha=clamp(lt * 3), rot=-3)
     fl = clamp(1 - lt / .1) * .5
     if kind == 'all' and t > 33.85: fl = clamp((t - 33.85) / .12)
     return post(img, G1, G2, tint=(1.05, .95, 1.0), sat=1.0, con=1.3, bright=.85, vig=1.0, flash=fl, ca=int(8 * math.exp(-lt * 8)) + 2, glitch=.7 * math.exp(-lt * 12), seed=fi, redpulse=p * .8)
 
+END_T = 38.0
 def scene_end(t, fi):
     G1 = Image.new('RGB', (W // 2, H // 2)); G2 = G1.copy(); img = Image.new('RGB', (W, H), (3, 2, 7))
     p = pulse_at(t); embers(G2, t, 40, (150, 60, 60), 9, 25)
     radial(G1, W / 2, 900, 900 * (.8 + .2 * p), (30, 5, 10 + int(10 * p)))
-    text(img, 'CLASH ROYALE', W / 2, 560, 130, (255, 205, 70), alpha=clamp((t - 34.4) / .5) * clamp((39.2 - t) / .3), rot=-3)
-    text(img, 'DAR KA NAAM', W / 2, 700, 70, (255, 255, 255), alpha=clamp((t - 34.8) / .5) * clamp((39.2 - t) / .3), rot=-3)
-    caption(img, t, 36.0, 39.3, 'Tumhe sabse zyada\nkaunsa card\ndarata hai?', 1100, 96, (255, 255, 255))
-    caption(img, t, 37.2, 39.3, 'COMMENT KARO', 1450, 70, (255, 120, 90), rot=-2)
-    if t > 37.0: text(img, 'Fan-made tribute  -  not affiliated with Supercell', W / 2, 1810, 30, (150, 140, 170), sw=2, shadow=False, rot=0, alpha=clamp((t - 37) / .6))
-    return post(img, G1, G2, vig=1.0, seed=fi, redpulse=p * .5, fade=clamp((DUR - t) / .4))
+    o = clamp((END_T - t) / .3)
+    text(img, 'CLASH ROYALE', W / 2, 520, 130, (255, 205, 70), alpha=clamp((t - 34.3) / .4) * o, rot=-3)
+    text(img, 'DAR KA NAAM', W / 2, 650, 70, (255, 255, 255), alpha=clamp((t - 34.6) / .4) * o, rot=-3)
+    caption(img, t, 35.3, 37.9, 'Tumhe sabse zyada\nkaunsa card\ndarata hai?', 980, 100, (255, 255, 255))
+    caption(img, t, 36.1, 37.9, 'COMMENT KARO', 1330, 78, (255, 120, 90), rot=-2)
+    if t > 36.4: text(img, 'Fan-made tribute - not affiliated with Supercell', W / 2, 1450, 28, (150, 140, 170), sw=2, shadow=False, rot=0, alpha=clamp((t - 36.4) / .5) * o)
+    return post(img, G1, G2, vig=1.0, seed=fi, redpulse=p * .5, fade=clamp((END_T - t) / .35))
 
 def render(fi):
     t = fi / FPS
-    if t < 7.0: im = scene_intro(t, fi)
+    if t >= 4.15: t += 2.8
+    if t < 4.15: im = scene_intro(t, fi)
     elif t < 7.3: im = Image.new('RGB', (W, H), (0, 0, 0))
     elif t < MUSK_START: im = scene_sparky(t, fi)
     elif t < GOLEM_START: im = scene_musk(t, fi)

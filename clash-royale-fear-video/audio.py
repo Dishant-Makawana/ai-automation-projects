@@ -66,6 +66,10 @@ for tk in (4.0, 5.0, 6.0):   # overtime clock ticks
     tick = norm(sweep(1900, 1500, 0.06) * decay(0.06, 70)); put(dry, tk, tick, 0.18); put(send, tk, tick, 0.2)
 for b in beats(): lub(b, g=0.55 if b < 7 else 1.0)
 put(send, 6.0, noise(1.0) * 0 + norm(filt(noise(1.0), lo=2500, hi=300) * np.linspace(0, 1, SR) ** 2), 0.15)
+# hook: instant impact + riser into the cut
+put(dry, 0.0, boom(2.5, 130, 34, 0.8, 2.0), 0.95); put(send, 0.0, boom(2.5, 130, 34, 0.8, 2.0), 0.6)
+put(dry, 0.0, norm(filt(noise(0.25), hi=900) * decay(0.25, 14, .001)), 0.5)
+put(dry, 0.3, norm(filt(noise(3.8), lo=6000, hi=700) * np.linspace(0, 1, int(3.8 * SR)) ** 2.2), 0.28)
 # ---------------- SPARKY
 put(dry, 7.3, boom(4, 90, 25), 0.9); put(send, 7.3, boom(4, 90, 25), 0.5)
 pad(7.3, 13.0, [55, 58.3, 116.5, 164.8], 1300, 0.12, 0.3, fade=0.4)
